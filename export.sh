@@ -9,8 +9,18 @@
 json=`python -mjson.tool $2`
  
 # export database to csv using json inputs and pass output into export file inside download directory
-python ochre.py $1 $3 $2 
+echo -e "\nTiming data:\n\nExport Started: $(date)" > $4
+python ochre.py $1 $3 $2 > /tmp/bar 2> /tmp/foo
+echo -e "\nExport Finished: $(date)\n" >> $4
 
-echo "Export is Done. Please click download below to get your compressed file." > $4
+
+
+awk '{print "   "$0"\n"}' /tmp/bar >> $4
+echo " 
+"
+awk '{print "   "$0"\n"}' /tmp/foo >> $4
+
+
+
  
 # generate markup and pass output to markup file
