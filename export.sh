@@ -10,7 +10,7 @@ json=`python -mjson.tool $2`
  
 # export database to csv using json inputs and pass output into export file inside download directory
 echo -e "\nTiming data:\n\nExport Started: $(date)" > $4
-python ochre.py $1 $3 $2 > /tmp/bar 2> /tmp/foo
+python json.py $1 $3 $2 > /tmp/bar 2> /tmp/foo
 echo -e "\nExport Finished: $(date)\n" >> $4
 
 
