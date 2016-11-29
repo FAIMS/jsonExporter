@@ -80,8 +80,8 @@ def indent(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
 
-
-pp.pprint(sys.argv)
+pprinterr = pprint.PrettyPrinter(indent=2, stream=sys.stderr)
+pprinterr.pprint(sys.argv)
 
 originalDir = sys.argv[1]
 finalExportDir = sys.argv[2]+"/"
