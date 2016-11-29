@@ -36,6 +36,7 @@ import glob
 import tempfile
 import xml.etree.ElementTree as ET
 import re
+import lsb_release
 
 print sys.argv
 
@@ -79,13 +80,8 @@ def indent(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
 
-testModule = "Boncuklu"
-if (len(sys.argv) > 2):
-	originalDir = sys.argv[1]
-	finalExportDir = sys.argv[2]+"/"
-else:
-	originalDir = '/home/brian/exporters/ochreExport/%s/' % (testModule)
-	finalExportDir = '/home/brian/exporters/ochreExport/%sExported/' % (testModule)
+originalDir = sys.argv[1]
+finalExportDir = sys.argv[2]+"/"
 
 exportDir = tempfile.mkdtemp()+"/"
 
@@ -97,6 +93,16 @@ srid = jsondata['srid']
 arch16nFile = glob.glob(originalDir+"*.0.properties")[0]
 print jsondata
 moduleName = clean(jsondata['name'])
+
+
+
+
+if lsb_release.get_lsb_information()['RELEASE'] == '16.04':
+    LIBSPATIALITE = 'mod_spatialite.so'
+else:
+    LIBSPATIALITE = 'libspatialite.so.5'
+
+
 
 def zipdir(path, zip):
     for root, dirs, files in os.walk(path):
@@ -111,10 +117,10 @@ except OSError:
 
 importCon = sqlite3.connect(importDB)
 importCon.enable_load_extension(True)
-importCon.load_extension("libspatialite.so.5")
+importCon.load_extension(LIBSPATIALITE)
 exportCon = sqlite3.connect(exportDB)
 exportCon.enable_load_extension(True)
-exportCon.load_extension("libspatialite.so.5")
+exportCon.load_extension(LIBSPATIALITE)
 exportCon.row_factory = namedtuple_factory
 
 
