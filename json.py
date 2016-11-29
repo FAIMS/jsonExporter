@@ -38,7 +38,7 @@ import xml.etree.ElementTree as ET
 import re
 import lsb_release
 
-print sys.argv
+
 
 from collections import namedtuple
 from itertools import izip
@@ -79,6 +79,9 @@ def indent(elem, level=0):
     else:
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
+
+
+pp.pprint(sys.argv)
 
 originalDir = sys.argv[1]
 finalExportDir = sys.argv[2]+"/"
