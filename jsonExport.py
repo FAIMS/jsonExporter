@@ -83,8 +83,8 @@ def indent(elem, level=0):
 pprinterr = pprint.PrettyPrinter(indent=2, stream=sys.stderr)
 pprinterr.pprint(sys.argv)
 
-#originalDir = sys.argv[1]
-#finalExportDir = sys.argv[2]+"/"
+originalDir = sys.argv[1]
+finalExportDir = sys.argv[2]+"/"
 
 exportDir = tempfile.mkdtemp()+"/"
 
