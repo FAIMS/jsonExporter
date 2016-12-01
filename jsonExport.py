@@ -83,8 +83,8 @@ def indent(elem, level=0):
 pprinterr = pprint.PrettyPrinter(indent=2, stream=sys.stderr)
 pprinterr.pprint(sys.argv)
 
-originalDir = sys.argv[1]
-finalExportDir = sys.argv[2]+"/"
+#originalDir = sys.argv[1]
+#finalExportDir = sys.argv[2]+"/"
 
 exportDir = tempfile.mkdtemp()+"/"
 
@@ -97,7 +97,7 @@ pprinterr.pprint(finalExportDir)
 
 with open(originalDir+'/module.settings') as settings:
 	jsondata = json.load(settings)
-	
+
 srid = jsondata['srid']
 arch16nFile = glob.glob(originalDir+"*.0.properties")[0]
 print jsondata
@@ -157,7 +157,7 @@ f.close()
 
 #pattern = re.compile(r'\b(' + '|'.join(arch16nDict.keys()) + r')\b')
 pattern = re.compile('|'.join(re.escape(key) for key in arch16nDict.keys()))
-pp.pprint(arch16nDict)
+#pp.pprint(arch16nDict)
 
 '''
 Attributes + Vocab
@@ -304,13 +304,17 @@ for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype
 			formattedIdents.text = "ERROR-NoIdentifier!"
 
 
-		for prop in exportCon.execute( '''select vocabname, measure, freetext, certainty, attributename, aentcountorder, vocabcountorder, formatString, appendCharacterString, attributeid
+		for prop in exportCon.execute( '''select vocabname, devocab as resolvedvocabname, measure, freetext, certainty, attributename, aentcountorder, vocabcountorder, formatString, appendCharacterString, attributeid
 	from latestNonDeletedArchent 
 	JOIN aenttype using (aenttypeid) 
 	JOIN (select * from idealaent) using (aenttypeid) 
 	join attributekey  using (attributeid) 
 	join latestNonDeletedAentValue using (uuid, attributeid) 
-	left outer join vocabulary using (attributeid, vocabid) 
+	left outer join vocabulary using (attributeid, vocabid)
+	left outer join (select vocabid, attributeid, coalesce(val, vocabname) as devocab
+                                  from vocabulary 
+                                  left outer join shape.keyval on (vocabulary.vocabname = keyval.key))
+                                  using (attributeid, vocabid)      
 	where uuid = ? 
 	order by uuid, aentcountorder, vocabcountorder;''', [row[0]]):
 			propEle = ET.SubElement(properties, "property")
@@ -366,6 +370,11 @@ files.append("relns.xml")
 shutil.copyfile(originalDir+'module.settings', exportDir+"module.settings")
 
 files.append("module.settings")
+
+
+shutil.copyfile(originalDir+'data_schema.xml', exportDir+"data_schema.xml")
+
+files.append("data_schema.xml")
 
 shutil.copyfile(arch16nFile, "%sprimaryArch16n.properties"%(exportDir))
 files.append("primaryArch16n.properties")
