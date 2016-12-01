@@ -1,6 +1,6 @@
 
 
-attach database 'ochre.sqlite3' as shape;
+attach database 'json.sqlite3' as shape;
 
 
 
