@@ -331,7 +331,7 @@ for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype
 					formattedProp.text = pattern.sub(lambda x: arch16nDict[x.group()], unicode(formattedIdentifiers[str(row[0])][prop[4]]))
 				else:
 					print "Notfound: %s" % (prop[4])
-					pp.pprint(formattedIdentifiers[str(row[0])])
+					#pp.pprint(formattedIdentifiers[str(row[0])])
 
 
 
