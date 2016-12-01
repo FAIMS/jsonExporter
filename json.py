@@ -95,7 +95,9 @@ files = ['json.sqlite3']
 pprinterr.pprint(originalDir)
 pprinterr.pprint(finalExportDir)
 
-jsondata = json.load(open(originalDir+'/module.settings'))
+with open(originalDir+'/module.settings') as settings:
+	jsondata = json.load(settings)
+	
 srid = jsondata['srid']
 arch16nFile = glob.glob(originalDir+"*.0.properties")[0]
 print jsondata
