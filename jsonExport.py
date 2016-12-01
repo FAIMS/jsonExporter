@@ -313,7 +313,7 @@ for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype
 	left outer join vocabulary using (attributeid, vocabid)
 	left outer join (select vocabid, attributeid, coalesce(val, vocabname) as devocab
                                   from vocabulary 
-                                  left outer join shape.keyval on (vocabulary.vocabname = keyval.key))
+                                  left outer join keyval on (vocabulary.vocabname = keyval.key))
                                   using (attributeid, vocabid)      
 	where uuid = ? 
 	order by uuid, aentcountorder, vocabcountorder;''', [row[0]]):
