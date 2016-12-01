@@ -89,9 +89,13 @@ finalExportDir = sys.argv[2]+"/"
 exportDir = tempfile.mkdtemp()+"/"
 
 importDB = originalDir+"db.sqlite3"
-exportDB = exportDir+"ochre.sqlite3"
-files = ['ochre.sqlite3']
-jsondata = json.load(open(originalDir+'module.settings'))
+exportDB = exportDir+"json.sqlite3"
+files = ['json.sqlite3']
+
+pprinterr.pprint(originalDir)
+pprinterr.pprint(finalExportDir)
+
+jsondata = json.load(open(originalDir+'/module.settings'))
 srid = jsondata['srid']
 arch16nFile = glob.glob(originalDir+"*.0.properties")[0]
 print jsondata
