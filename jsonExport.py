@@ -384,7 +384,7 @@ for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype
 
 		idents = ET.SubElement(aent, "identifiers")
 		properties = ET.SubElement(aent, "properties")	
-		for ident in exportCon.execute( '''select vocabname, measure, freetext, certainty, attributename, aentcountorder, vocabcountorder, formatString, appendCharacterString
+		for ident in exportCon.execute( '''select vocabname, measure, freetext, certainty, attributename, aentcountorder, vocabcountorder, formatString, appendCharacterString, vocabid
 	from latestNonDeletedArchent 
 	JOIN aenttype using (aenttypeid) 
 	JOIN (select * from idealaent where isIdentifier='true') using (aenttypeid) 
@@ -407,7 +407,7 @@ for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype
 			formattedIdents.text = "ERROR-NoIdentifier!"
 
 
-		for prop in exportCon.execute( '''select vocabname, devocab as resolvedvocabname, measure, freetext, certainty, attributename, aentcountorder, vocabcountorder, formatString, appendCharacterString, attributeid
+		for prop in exportCon.execute( '''select vocabname, devocab as resolvedvocabname, measure, freetext, certainty, attributename, aentcountorder, vocabcountorder, formatString, appendCharacterString, attributeid, vocabid
 	from latestNonDeletedArchent 
 	JOIN aenttype using (aenttypeid) 
 	JOIN (select * from idealaent) using (aenttypeid) 
