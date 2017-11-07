@@ -80,6 +80,13 @@ def indent(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
 
+def makeSurePathExists(path):
+    try:
+        os.makedirs(path)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
+
 pprinterr = pprint.PrettyPrinter(indent=2, stream=sys.stderr)
 pprinterr.pprint(sys.argv)
 
