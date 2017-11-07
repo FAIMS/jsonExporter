@@ -39,6 +39,7 @@ import re
 import lsb_release
 
 
+from collections import defaultdict
 
 from collections import namedtuple
 from itertools import izip
