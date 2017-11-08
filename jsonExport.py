@@ -441,7 +441,7 @@ for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype
 					#print "Good: %s %s" % (prop[4], formattedIdentifiers[str(row[0])][prop[4]])
 					formattedProp.text = pattern.sub(lambda x: arch16nDict[x.group()], unicode(formattedIdentifiers[str(row[0])][prop[4]]))
 				else:
-					print "Formatted identifier Notfound: %s %s" % (prop[4], row[0])
+					print "Formatted identifier Notfound: %s %s" % (prop[4], row[0], formattedIdentifiers[str(row[0])])
 					#pp.pprint(formattedIdentifiers[str(row[0])])
 
 
