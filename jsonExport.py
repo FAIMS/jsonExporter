@@ -43,7 +43,7 @@ from collections import defaultdict
 
 from collections import namedtuple
 from itertools import izip
-
+fileNameType = "Identifier"
 
 pp = pprint.PrettyPrinter(indent=2)
 
@@ -370,10 +370,10 @@ if images:
 				files.append(newFilename+".json")
 				files.append(newFilename)
 			else:
-				print "<b>```Unable to find file %s, from uuid: %s```" % (originalDir+filename[1], filename[0]) 
+				print "```Unable to find file %s, from uuid: %s```" % (originalDir+filename[1], filename[0]) 
 		except Exception as e:
 				print e
-				print "<b>```Unable to find file (exception thrown) %s, from uuid: %s```" % (originalDir+filename[1], filename[0])  
+				print "```Unable to find file (exception thrown) %s, from uuid: %s```" % (originalDir+filename[1], filename[0])  
 
 
 for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype"):
