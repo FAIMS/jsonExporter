@@ -48,13 +48,13 @@ from itertools import izip
 pp = pprint.PrettyPrinter(indent=2)
 
 def namedtuple_factory(cursor, row):
-    """
-    Usage:
-    con.row_factory = namedtuple_factory
-    """
-    fields = [col[0] for col in cursor.description]
-    Row = namedtuple("Row", fields)
-    return Row(*row)
+	"""
+	Usage:
+	con.row_factory = namedtuple_factory
+	"""
+	fields = [col[0] for col in cursor.description]
+	Row = namedtuple("Row", fields)
+	return Row(*row)
 
 
 def upper_repl(match):
@@ -67,26 +67,26 @@ def clean(str):
 	 return out
 
 def indent(elem, level=0):
-    i = "\n" + level*"  "
-    if len(elem):
-        if not elem.text or not elem.text.strip():
-            elem.text = i + "  "
-        if not elem.tail or not elem.tail.strip():
-            elem.tail = i
-        for elem in elem:
-            indent(elem, level+1)
-        if not elem.tail or not elem.tail.strip():
-            elem.tail = i
-    else:
-        if level and (not elem.tail or not elem.tail.strip()):
-            elem.tail = i
+	i = "\n" + level*"  "
+	if len(elem):
+		if not elem.text or not elem.text.strip():
+			elem.text = i + "  "
+		if not elem.tail or not elem.tail.strip():
+			elem.tail = i
+		for elem in elem:
+			indent(elem, level+1)
+		if not elem.tail or not elem.tail.strip():
+			elem.tail = i
+	else:
+		if level and (not elem.tail or not elem.tail.strip()):
+			elem.tail = i
 
 def makeSurePathExists(path):
-    try:
-        os.makedirs(path)
-    except OSError as exception:
-        if exception.errno != errno.EEXIST:
-            raise
+	try:
+		os.makedirs(path)
+	except OSError as exception:
+		if exception.errno != errno.EEXIST:
+			raise
 
 pprinterr = pprint.PrettyPrinter(indent=2, stream=sys.stderr)
 pprinterr.pprint(sys.argv)
@@ -116,42 +116,42 @@ moduleName = clean(jsondata['name'])
 images = None
 overrideFormattedIdentifiers = None
 try:
-    foo= json.load(open(sys.argv[3],"r"))
-    # print foo["Export Images and Files?"]
-    if (foo["Export Images and Files?"] != []):
-        images = True
-    else:
-        images = False
+	foo= json.load(open(sys.argv[3],"r"))
+	# print foo["Export Images and Files?"]
+	if (foo["Export Images and Files?"] != []):
+		images = True
+	else:
+		images = False
 except:
-    sys.stderr.write("Json input failed")
-    images = True
+	sys.stderr.write("Json input failed")
+	images = True
 
 print "Exporting Files %s" % (images)
 print foo
 def zipdir(path, zip):
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            zip.write(os.path.join(root, file))
+	for root, dirs, files in os.walk(path):
+		for file in files:
+			zip.write(os.path.join(root, file))
 
 
 
 if lsb_release.get_lsb_information()['RELEASE'] == '16.04':
-    LIBSPATIALITE = 'mod_spatialite.so'
+	LIBSPATIALITE = 'mod_spatialite.so'
 else:
-    LIBSPATIALITE = 'libspatialite.so.5'
+	LIBSPATIALITE = 'libspatialite.so.5'
 
 
 
 def zipdir(path, zip):
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            zip.write(os.path.join(root, file))
+	for root, dirs, files in os.walk(path):
+		for file in files:
+			zip.write(os.path.join(root, file))
 
 
 try:
-    os.remove(exportDB)
+	os.remove(exportDB)
 except OSError:
-    pass
+	pass
 
 importCon = sqlite3.connect(importDB)
 importCon.enable_load_extension(True)
@@ -257,7 +257,7 @@ for row in exportCon.execute("select * from attributekey;"):
 	VocabProvenance			TEXT,
 	VocabDateCertainty		TEXT, -- this is effectively whether or not your dates are circa or not. It can be covered in note from in the Annotation, but might be nice to separate out.
 	VocabType				TEXT, -- This would be for associations other than 'ParentVocab'. I can't think of too many examples where this is relevant, but it's basically an option giving you access to a meaningful analytic group or type, that you may not want to have to step through in a picture gallery. Eg for transfer prints, I might like to see a summary of % of Chinoiserie vs European landscape patterns as I work, but I don't want to have to have to choose 'Chinoiserie>Landscape>Landscape with Border>Willow' each time I record something. In some respects this is stretching bow for 'data entry' fused with analysis, but if we're tinkering with the schema it may not hurt. It might?
- 	VocabMaker				TEXT -- This is standard in typologies for historical archaeology but not as important to other archaeologies. As above, it may be nice to see these sorts of analyses as you work, but likely better suited to post-ex analysis than data recording.
+	VocabMaker				TEXT -- This is standard in typologies for historical archaeology but not as important to other archaeologies. As above, it may be nice to see these sorts of analyses as you work, but likely better suited to post-ex analysis than data recording.
  
  '''
 root = ET.ElementTree(attributeXML)
@@ -297,83 +297,83 @@ for line in f.readlines():
 
 
 if images:
-    for directory in importCon.execute("select distinct aenttypename, attributename from latestnondeletedaentvalue join attributekey using (attributeid) join latestnondeletedarchent using (uuid) join aenttype using (aenttypeid) where attributeisfile is not null and measure is not null"):
-        makeSurePathExists("%s/%s/%s" % (exportDir,clean(directory[0]), clean(directory[1])))
+	for directory in importCon.execute("select distinct aenttypename, attributename from latestnondeletedaentvalue join attributekey using (attributeid) join latestnondeletedarchent using (uuid) join aenttype using (aenttypeid) where attributeisfile is not null and measure is not null"):
+		makeSurePathExists("%s/%s/%s" % (exportDir,clean(directory[0]), clean(directory[1])))
 
-    filehash = defaultdict(int)
-
-
-
-    print "* File list exported:"
-    for filename in importCon.execute("select uuid, measure, freetext, certainty, attributename, aenttypename from latestnondeletedaentvalue join attributekey using (attributeid) join latestnondeletedarchent using (uuid) join aenttype using (aenttypeid) where attributeisfile is not null and measure is not null"):
-        try:        
-            oldPath = filename[1].split("/")
-            oldFilename = oldPath[2]
-            aenttypename = clean(filename[5])
-            attributename = clean(filename[4])
-            newFilename = "%s/%s/%s" % (aenttypename, attributename, oldFilename)
-            if os.path.isfile(originalDir+filename[1]):
-                if (fileNameType == "Identifier"):
-                    # print filename[0]
-                    
-                    filehash["%s%s" % (filename[0], attributename)] += 1
-                    
-
-                    foo = exportCon.execute("select identifier from %s where uuid = %s" % (aenttypename, filename[0]))
-                    identifier=cleanWithUnder(foo.fetchone()[0])
-
-                    r= re.search("(\.[^.]*)$",oldFilename)
-
-                    delimiter = ""
-                    
-                    if filename[2]:
-                        delimiter = "a"
-
-                    newFilename =  "%s/%s/%s_%s_%s%s%s" % (aenttypename, identifier, attributename, identifier, filehash["%s%s" % (filename[0], attributename)],delimiter, r.group(0))
-                    
+	filehash = defaultdict(int)
 
 
-                exifdata = exifCon.execute("select * from %s where uuid = %s" % (aenttypename, filename[0])).fetchone()
-                iddata = [] 
-                for id in importCon.execute("select coalesce(measure, vocabname, freetext) from latestnondeletedarchentidentifiers where uuid = %s union select aenttypename from latestnondeletedarchent join aenttype using (aenttypeid) where uuid = %s" % (filename[0], filename[0])):
-                    iddata.append(id[0])
+
+	print "* File list exported:"
+	for filename in importCon.execute("select uuid, measure, freetext, certainty, attributename, aenttypename from latestnondeletedaentvalue join attributekey using (attributeid) join latestnondeletedarchent using (uuid) join aenttype using (aenttypeid) where attributeisfile is not null and measure is not null"):
+		try:        
+			oldPath = filename[1].split("/")
+			oldFilename = oldPath[2]
+			aenttypename = clean(filename[5])
+			attributename = clean(filename[4])
+			newFilename = "%s/%s/%s" % (aenttypename, attributename, oldFilename)
+			if os.path.isfile(originalDir+filename[1]):
+				if (fileNameType == "Identifier"):
+					# print filename[0]
+					
+					filehash["%s%s" % (filename[0], attributename)] += 1
+					
+
+					foo = exportCon.execute("select identifier from %s where uuid = %s" % (aenttypename, filename[0]))
+					identifier=cleanWithUnder(foo.fetchone()[0])
+
+					r= re.search("(\.[^.]*)$",oldFilename)
+
+					delimiter = ""
+					
+					if filename[2]:
+						delimiter = "a"
+
+					newFilename =  "%s/%s/%s_%s_%s%s%s" % (aenttypename, identifier, attributename, identifier, filehash["%s%s" % (filename[0], attributename)],delimiter, r.group(0))
+					
 
 
-                shutil.copyfile(originalDir+filename[1], exportDir+newFilename)
-
-                mergedata = exifdata.copy()
-                mergedata.update(jsondata)
-                mergedata.pop("geospatialcolumn", None)
-                exifjson = {"SourceFile":exportDir+newFilename, 
-                            "UserComment": [json.dumps(mergedata)], 
-                            "ImageDescription": exifdata['identifier'], 
-                            "XPSubject": "Annotation: %s" % (filename[2]),
-                            "Keywords": iddata,
-                            "Artist": exifdata['createdBy'],
-                            "XPAuthor": exifdata['createdBy'],
-                            "Software": "FAIMS Project",
-                            "ImageID": exifdata['uuid'],
-                            "Copyright": jsondata['name']
+				exifdata = exifCon.execute("select * from %s where uuid = %s" % (aenttypename, filename[0])).fetchone()
+				iddata = [] 
+				for id in importCon.execute("select coalesce(measure, vocabname, freetext) from latestnondeletedarchentidentifiers where uuid = %s union select aenttypename from latestnondeletedarchent join aenttype using (aenttypeid) where uuid = %s" % (filename[0], filename[0])):
+					iddata.append(id[0])
 
 
-                            }
-                with open(exportDir+newFilename+".json", "w") as outfile:
-                    json.dump(exifjson, outfile)    
+				shutil.copyfile(originalDir+filename[1], exportDir+newFilename)
 
-                if imghdr.what(exportDir+newFilename):
-                    
-                    subprocess.call(["exiftool", "-m", "-q", "-sep", "\"; \"", "-overwrite_original", "-j=%s" % (exportDir+newFilename+".json"), exportDir+newFilename])
+				mergedata = exifdata.copy()
+				mergedata.update(jsondata)
+				mergedata.pop("geospatialcolumn", None)
+				exifjson = {"SourceFile":exportDir+newFilename, 
+							"UserComment": [json.dumps(mergedata)], 
+							"ImageDescription": exifdata['identifier'], 
+							"XPSubject": "Annotation: %s" % (filename[2]),
+							"Keywords": iddata,
+							"Artist": exifdata['createdBy'],
+							"XPAuthor": exifdata['createdBy'],
+							"Software": "FAIMS Project",
+							"ImageID": exifdata['uuid'],
+							"Copyright": jsondata['name']
 
 
-                exportCon.execute("update %s set %s = ? where uuid = ?" % (aenttypename, attributename), (newFilename, filename[0]))
-                print "    * %s" % (newFilename)
-                files.append(newFilename+".json")
-                files.append(newFilename)
-            else:
-                print "<b>```Unable to find file %s, from uuid: %s```" % (originalDir+filename[1], filename[0]) 
-        except Exception as e:
-        		print e
-                print "<b>```Unable to find file (exception thrown) %s, from uuid: %s```" % (originalDir+filename[1], filename[0])  
+							}
+				with open(exportDir+newFilename+".json", "w") as outfile:
+					json.dump(exifjson, outfile)    
+
+				if imghdr.what(exportDir+newFilename):
+					
+					subprocess.call(["exiftool", "-m", "-q", "-sep", "\"; \"", "-overwrite_original", "-j=%s" % (exportDir+newFilename+".json"), exportDir+newFilename])
+
+
+				exportCon.execute("update %s set %s = ? where uuid = ?" % (aenttypename, attributename), (newFilename, filename[0]))
+				print "    * %s" % (newFilename)
+				files.append(newFilename+".json")
+				files.append(newFilename)
+			else:
+				print "<b>```Unable to find file %s, from uuid: %s```" % (originalDir+filename[1], filename[0]) 
+		except Exception as e:
+				print e
+				print "<b>```Unable to find file (exception thrown) %s, from uuid: %s```" % (originalDir+filename[1], filename[0])  
 
 
 for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype"):
@@ -424,9 +424,9 @@ for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype
 	join latestNonDeletedAentValue using (uuid, attributeid) 
 	left outer join vocabulary using (attributeid, vocabid)
 	left outer join (select vocabid, attributeid, coalesce(val, vocabname) as devocab
-                                  from vocabulary 
-                                  left outer join keyval on (vocabulary.vocabname = keyval.key))
-                                  using (attributeid, vocabid)      
+								  from vocabulary 
+								  left outer join keyval on (vocabulary.vocabname = keyval.key))
+								  using (attributeid, vocabid)      
 	where uuid = ? 
 	order by uuid, aentcountorder, vocabcountorder;''', [row[0]]):
 			propEle = ET.SubElement(properties, "property")
@@ -501,10 +501,10 @@ files.append("primaryArch16n.properties")
 
 tarf = tarfile.open("%s/%s-xmlrepo-export.tar.bz2" % (finalExportDir,moduleName), 'w:bz2')
 try:
-    for file in files:
-        tarf.add(exportDir+file, arcname=moduleName+'/'+file)
+	for file in files:
+		tarf.add(exportDir+file, arcname=moduleName+'/'+file)
 finally:
-    tarf.close()
+	tarf.close()
 
 
 
@@ -515,7 +515,7 @@ finally:
 #zipf.close()
 
 try:
-    os.remove(exportDir)
+	os.remove(exportDir)
 except OSError:
-    pass
+	pass
 
