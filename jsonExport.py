@@ -370,9 +370,10 @@ if images:
                 files.append(newFilename+".json")
                 files.append(newFilename)
             else:
-                print "<b>Unable to find file %s, from uuid: %s" % (originalDir+filename[1], filename[0]) 
-        except:
-                print "<b>Unable to find file (exception thrown) %s, from uuid: %s" % (originalDir+filename[1], filename[0])  
+                print "<b>```Unable to find file %s, from uuid: %s```" % (originalDir+filename[1], filename[0]) 
+        except Exception as e:
+        		print e
+                print "<b>```Unable to find file (exception thrown) %s, from uuid: %s```" % (originalDir+filename[1], filename[0])  
 
 
 for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype"):
@@ -438,7 +439,7 @@ for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype
 				#print str(	)
 				if prop[5] in formattedIdentifiers[str(row[0])]:
 					formattedProp = ET.SubElement(propEle, "formattedAttribute")
-					print "Good: %s %s" % (prop[5], formattedIdentifiers[str(row[0])][prop[5]])
+					#print "Good: %s %s" % (prop[5], formattedIdentifiers[str(row[0])][prop[5]])
 					formattedProp.text = pattern.sub(lambda x: arch16nDict[x.group()], unicode(formattedIdentifiers[str(row[0])][prop[5]]))
 				else:
 					print "Formatted identifier Notfound" 
