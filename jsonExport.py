@@ -436,14 +436,15 @@ for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype
 
 			if str(row[0]) in formattedIdentifiers:
 				#print str(	)
-				if prop[4] in formattedIdentifiers[str(row[0])]:
+				if prop[5] in formattedIdentifiers[str(row[0])]:
 					formattedProp = ET.SubElement(propEle, "formattedAttribute")
-					#print "Good: %s %s" % (prop[4], formattedIdentifiers[str(row[0])][prop[4]])
-					formattedProp.text = pattern.sub(lambda x: arch16nDict[x.group()], unicode(formattedIdentifiers[str(row[0])][prop[4]]))
+					print "Good: %s %s" % (prop[5], formattedIdentifiers[str(row[0])][prop[5]])
+					formattedProp.text = pattern.sub(lambda x: arch16nDict[x.group()], unicode(formattedIdentifiers[str(row[0])][prop[5]]))
 				else:
 					print "Formatted identifier Notfound" 
-					print(prop[4], row[0], formattedIdentifiers[str(row[0])])
-					#pp.pprint(formattedIdentifiers[str(row[0])])
+					print(prop[5], row[0])
+					pp.pprint(prop)
+					pp.pprint(formattedIdentifiers[str(row[0])])
 
 
 
