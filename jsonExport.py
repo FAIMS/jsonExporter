@@ -352,8 +352,6 @@ if images:
 							"ImageDescription": formattedIdentifiers[str(filename[0])]['identifier'],
 							"XPSubject": "Annotation: %s" % (filename[2]),
 							"Keywords": iddata,
-							"Artist":  formattedIdentifiers[str(filename[0])]['createdBy'],
-							"XPAuthor":  formattedIdentifiers[str(filename[0])]['createdBy'],
 							"Software": "FAIMS Project",
 							"ImageID":  formattedIdentifiers[str(filename[0])]['uuid'],
 							"Copyright": jsondata['name']
