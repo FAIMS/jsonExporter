@@ -26,7 +26,7 @@ select uuid, aenttypename, attributename, coalesce(group_concat(response, ''),''
  group by uuid, attributeid
  order by uuid;
  
-select uuid, aenttypename, 'identifier', response
+select uuid, aenttypename, 'identifier', response, createdAt, createdBy
 from latestNonDeletedArchEntFormattedIdentifiers join createdModifiedAtBy using (uuid)
 order by createdAt;
 

@@ -56,6 +56,9 @@ def namedtuple_factory(cursor, row):
 	Row = namedtuple("Row", fields)
 	return Row(*row)
 
+def cleanWithUnder(str):
+     out = re.sub("[^a-zA-Z0-9]+", "_", str)     
+     return out  
 
 def upper_repl(match):
 	if (match.group(1) == None):
@@ -318,7 +321,7 @@ if images:
 					
 					filehash["%s%s" % (filename[0], attributename)] += 1
 					
-					pp.pprint(formattedIdentifiers)
+					pp.pprint(formattedIdentifiers )
 					#foo = exportCon.execute("select identifier from %s where uuid = %s" % (aenttypename, filename[0]))
 					identifier=cleanWithUnder(formattedIdentifiers[filename[0]]['identifier'])
 
