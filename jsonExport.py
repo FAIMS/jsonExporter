@@ -299,7 +299,7 @@ for line in f.readlines():
 
 
 
-
+fileReplacelist={}
 if images:
 #	for directory in importCon.execute("select distinct aenttypename, attributename from latestnondeletedaentvalue join attributekey using (attributeid) join latestnondeletedarchent using (uuid) join aenttype using (aenttypeid) where attributeisfile is not null and measure is not null"):
 #		makeSurePathExists("%s/%s/%s" % (exportDir,clean(directory[0]), clean(directory[1])))
@@ -346,6 +346,7 @@ if images:
 				if not os.path.exists(exportDir+newPath):
 					os.makedirs(exportDir+newPath)
 				shutil.copyfile(originalDir+filename[1], exportDir+newFilename)
+				fileReplacelist[filename[1]] = newFilename
 
 				# mergedata = exifdata.copy()
 				# mergedata.update(jsondata)
@@ -439,7 +440,11 @@ for aenttype in exportCon.execute("select aenttypeid, aenttypename from aenttype
 			for value, key in izip(prop, prop._fields):		
 				if value:
 					sublEle = ET.SubElement(propEle,key)
-					sublEle.text = unicode(value)
+					if value in fileReplacelist:
+						print("Replaced {0} with {1}".format(value, fileReplacelist[value]))
+						sublEle.text = unicode(fileReplacelist[value])	
+					else:
+						sublEle.text = unicode(value)
 
 			if str(row[0]) in formattedIdentifiers:
 				#print str(	)
