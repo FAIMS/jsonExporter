@@ -344,7 +344,7 @@ if images:
 
 				print("```From {0} to {1}```".format(originalDir+filename[1], exportDir+newFilename))
 				if not os.path.exists(exportDir+newPath):
-					os.mkdirs(exportDir+newPath)
+					os.makedirs(exportDir+newPath)
 				shutil.copyfile(originalDir+filename[1], exportDir+newFilename)
 
 				# mergedata = exifdata.copy()
