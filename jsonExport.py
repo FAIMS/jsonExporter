@@ -318,9 +318,9 @@ if images:
 					
 					filehash["%s%s" % (filename[0], attributename)] += 1
 					
-
-					foo = exportCon.execute("select identifier from %s where uuid = %s" % (aenttypename, filename[0]))
-					identifier=cleanWithUnder(foo.fetchone()[0])
+					pp.pprint(formattedIdentifiers[filename[0]])
+					#foo = exportCon.execute("select identifier from %s where uuid = %s" % (aenttypename, filename[0]))
+					identifier=cleanWithUnder(formattedIdentifiers[filename[0]]['identifier'])
 
 					r= re.search("(\.[^.]*)$",oldFilename)
 
@@ -332,9 +332,9 @@ if images:
 					newFilename =  "%s/%s/%s_%s_%s%s%s" % (aenttypename, identifier, attributename, identifier, filehash["%s%s" % (filename[0], attributename)],delimiter, r.group(0))
 					
 
-				pp.pprint(formattedIdentifiers[filename[0]])
-				exifdata = exifCon.execute("select * from %s where uuid = %s" % (aenttypename, filename[0])).fetchone()
-				iddata = [] 
+				#pp.pprint(formattedIdentifiers[filename[0]])
+				#exifdata = exifCon.execute("select * from %s where uuid = %s" % (aenttypename, filename[0])).fetchone()
+				#iddata = [] 
 				for id in importCon.execute("select coalesce(measure, vocabname, freetext) from latestnondeletedarchentidentifiers where uuid = %s union select aenttypename from latestnondeletedarchent join aenttype using (aenttypeid) where uuid = %s" % (filename[0], filename[0])):
 					iddata.append(id[0])
 
@@ -346,13 +346,13 @@ if images:
 				mergedata.pop("geospatialcolumn", None)
 				exifjson = {"SourceFile":exportDir+newFilename, 
 							"UserComment": [json.dumps(mergedata)], 
-							"ImageDescription": exifdata['identifier'], 
+							"ImageDescription": formattedIdentifiers[filename[0]]['identifier'],
 							"XPSubject": "Annotation: %s" % (filename[2]),
 							"Keywords": iddata,
-							"Artist": exifdata['createdBy'],
-							"XPAuthor": exifdata['createdBy'],
+							"Artist":  formattedIdentifiers[filename[0]]['createdBy'],
+							"XPAuthor":  formattedIdentifiers[filename[0]]['createdBy'],
 							"Software": "FAIMS Project",
-							"ImageID": exifdata['uuid'],
+							"ImageID":  formattedIdentifiers[filename[0]]['uuid'],
 							"Copyright": jsondata['name']
 
 
@@ -364,8 +364,9 @@ if images:
 					
 					subprocess.call(["exiftool", "-m", "-q", "-sep", "\"; \"", "-overwrite_original", "-j=%s" % (exportDir+newFilename+".json"), exportDir+newFilename])
 
-
-				exportCon.execute("update %s set %s = ? where uuid = ?" % (aenttypename, attributename), (newFilename, filename[0]))
+				#TODO Figure out how to write this back to something?
+				
+				#exportCon.execute("update %s set %s = ? where uuid = ?" % (aenttypename, attributename), (newFilename, filename[0]))
 				print "    * %s" % (newFilename)
 				files.append(newFilename+".json")
 				files.append(newFilename)
