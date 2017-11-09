@@ -318,7 +318,7 @@ if images:
 					
 					filehash["%s%s" % (filename[0], attributename)] += 1
 					
-					pp.pprint(formattedIdentifiers[filename[0]])
+					pp.pprint(formattedIdentifiers)
 					#foo = exportCon.execute("select identifier from %s where uuid = %s" % (aenttypename, filename[0]))
 					identifier=cleanWithUnder(formattedIdentifiers[filename[0]]['identifier'])
 
@@ -365,7 +365,7 @@ if images:
 					subprocess.call(["exiftool", "-m", "-q", "-sep", "\"; \"", "-overwrite_original", "-j=%s" % (exportDir+newFilename+".json"), exportDir+newFilename])
 
 				#TODO Figure out how to write this back to something?
-				
+
 				#exportCon.execute("update %s set %s = ? where uuid = ?" % (aenttypename, attributename), (newFilename, filename[0]))
 				print "    * %s" % (newFilename)
 				files.append(newFilename+".json")
@@ -373,7 +373,7 @@ if images:
 			else:
 				print "```Unable to find file %s, from uuid: %s```" % (originalDir+filename[1], filename[0]) 
 		except Exception as e:
-				print e
+				pp.pprint(e)
 				print "```Unable to find file (exception thrown) %s, from uuid: %s```" % (originalDir+filename[1], filename[0])  
 
 
