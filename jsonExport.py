@@ -342,7 +342,7 @@ if images:
 				# for id in importCon.execute("select coalesce(measure, vocabname, freetext) from latestnondeletedarchentidentifiers where uuid = %s union select aenttypename from latestnondeletedarchent join aenttype using (aenttypeid) where uuid = %s" % (filename[0], filename[0])):
 				# 	iddata.append(id[0])
 
-				print("```From {0} to {1}```".format(originalDir+filename[1], exportDir+newFilename))
+				#print("```From {0} to {1}```".format(originalDir+filename[1], exportDir+newFilename))
 				if not os.path.exists(exportDir+newPath):
 					os.makedirs(exportDir+newPath)
 				shutil.copyfile(originalDir+filename[1], exportDir+newFilename)
@@ -372,7 +372,7 @@ if images:
 
 				#exportCon.execute("update %s set %s = ? where uuid = ?" % (aenttypename, attributename), (newFilename, filename[0]))
 				print "    * %s" % (newFilename)
-				files.append(newFilename+".json")
+				#files.append(newFilename+".json")
 				files.append(newFilename)
 			else:
 				print "```Unable to find file %s, from uuid: %s```" % (originalDir+filename[1], filename[0]) 
