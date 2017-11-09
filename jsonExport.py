@@ -38,6 +38,7 @@ import xml.etree.ElementTree as ET
 import re
 import lsb_release
 import tarfile
+import traceback
 
 from collections import defaultdict
 
@@ -316,54 +317,53 @@ if images:
 			attributename = clean(filename[4])
 			newFilename = "%s/%s/%s" % (aenttypename, attributename, oldFilename)
 			if os.path.isfile(originalDir+filename[1]):
-				if (fileNameType == "Identifier"):
 					# print filename[0]
 					
-					filehash["%s%s" % (filename[0], attributename)] += 1
-					
-					pp.pprint(formattedIdentifiers )
-					#foo = exportCon.execute("select identifier from %s where uuid = %s" % (aenttypename, filename[0]))
-					identifier=cleanWithUnder(formattedIdentifiers[str(filename[0])]['identifier'])
+				filehash["%s%s" % (filename[0], attributename)] += 1
+				
+				#pp.pprint(formattedIdentifiers )
+				#foo = exportCon.execute("select identifier from %s where uuid = %s" % (aenttypename, filename[0]))
+				identifier=cleanWithUnder(formattedIdentifiers[str(filename[0])]['identifier'])
 
-					r= re.search("(\.[^.]*)$",oldFilename)
+				r= re.search("(\.[^.]*)$",oldFilename)
 
-					delimiter = ""
-					
-					if filename[2]:
-						delimiter = "a"
+				delimiter = ""
+				
+				if filename[2]:
+					delimiter = "a"
 
-					newFilename =  "%s/%s/%s_%s_%s%s%s" % (aenttypename, identifier, attributename, identifier, filehash["%s%s" % (filename[0], attributename)],delimiter, r.group(0))
-					
+				newFilename =  "%s/%s/%s_%s_%s%s%s" % (aenttypename, identifier, attributename, identifier, filehash["%s%s" % (filename[0], attributename)],delimiter, r.group(0))
+				
 
 				#pp.pprint(formattedIdentifiers[filename[0]])
 				#exifdata = exifCon.execute("select * from %s where uuid = %s" % (aenttypename, filename[0])).fetchone()
-				iddata = [] 
-				for id in importCon.execute("select coalesce(measure, vocabname, freetext) from latestnondeletedarchentidentifiers where uuid = %s union select aenttypename from latestnondeletedarchent join aenttype using (aenttypeid) where uuid = %s" % (filename[0], filename[0])):
-					iddata.append(id[0])
+				# iddata = [] 
+				# for id in importCon.execute("select coalesce(measure, vocabname, freetext) from latestnondeletedarchentidentifiers where uuid = %s union select aenttypename from latestnondeletedarchent join aenttype using (aenttypeid) where uuid = %s" % (filename[0], filename[0])):
+				# 	iddata.append(id[0])
 
-
+				print("```From {0} to {1}```".format(originalDir+filename[1], exportDir+newFilename))
 				shutil.copyfile(originalDir+filename[1], exportDir+newFilename)
 
-				mergedata = exifdata.copy()
-				mergedata.update(jsondata)
-				mergedata.pop("geospatialcolumn", None)
-				exifjson = {"SourceFile":exportDir+newFilename, 
-							"UserComment": [json.dumps(mergedata)], 
-							"ImageDescription": formattedIdentifiers[str(filename[0])]['identifier'],
-							"XPSubject": "Annotation: %s" % (filename[2]),
-							"Keywords": iddata,
-							"Software": "FAIMS Project",
-							"ImageID":  formattedIdentifiers[str(filename[0])]['uuid'],
-							"Copyright": jsondata['name']
+				# mergedata = exifdata.copy()
+				# mergedata.update(jsondata)
+				# mergedata.pop("geospatialcolumn", None)
+				# exifjson = {"SourceFile":exportDir+newFilename, 
+				# 			"UserComment": [json.dumps(mergedata)], 
+				# 			"ImageDescription": formattedIdentifiers[str(filename[0])]['identifier'],
+				# 			"XPSubject": "Annotation: %s" % (filename[2]),
+				# 			"Keywords": iddata,
+				# 			"Software": "FAIMS Project",
+				# 			"ImageID":  formattedIdentifiers[str(filename[0])]['uuid'],
+				# 			"Copyright": jsondata['name']
 
 
-							}
-				with open(exportDir+newFilename+".json", "w") as outfile:
-					json.dump(exifjson, outfile)    
+				# 			}
+				# with open(exportDir+newFilename+".json", "w") as outfile:
+				# 	json.dump(exifjson, outfile)    
 
-				if imghdr.what(exportDir+newFilename):
+				# if imghdr.what(exportDir+newFilename):
 					
-					subprocess.call(["exiftool", "-m", "-q", "-sep", "\"; \"", "-overwrite_original", "-j=%s" % (exportDir+newFilename+".json"), exportDir+newFilename])
+				# 	subprocess.call(["exiftool", "-m", "-q", "-sep", "\"; \"", "-overwrite_original", "-j=%s" % (exportDir+newFilename+".json"), exportDir+newFilename])
 
 				#TODO Figure out how to write this back to something?
 
@@ -375,6 +375,7 @@ if images:
 				print "```Unable to find file %s, from uuid: %s```" % (originalDir+filename[1], filename[0]) 
 		except Exception as e:
 				pp.pprint(e)
+				traceback.print_exc(file=sys.stdout)
 				print "```Unable to find file (exception thrown) %s, from uuid: %s```" % (originalDir+filename[1], filename[0])  
 
 
