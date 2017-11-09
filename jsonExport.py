@@ -323,7 +323,7 @@ if images:
 					
 					pp.pprint(formattedIdentifiers )
 					#foo = exportCon.execute("select identifier from %s where uuid = %s" % (aenttypename, filename[0]))
-					identifier=cleanWithUnder(formattedIdentifiers[filename[0]]['identifier'])
+					identifier=cleanWithUnder(formattedIdentifiers[str(filename[0])]['identifier'])
 
 					r= re.search("(\.[^.]*)$",oldFilename)
 
@@ -349,13 +349,13 @@ if images:
 				mergedata.pop("geospatialcolumn", None)
 				exifjson = {"SourceFile":exportDir+newFilename, 
 							"UserComment": [json.dumps(mergedata)], 
-							"ImageDescription": formattedIdentifiers[filename[0]]['identifier'],
+							"ImageDescription": formattedIdentifiers[str(filename[0])]['identifier'],
 							"XPSubject": "Annotation: %s" % (filename[2]),
 							"Keywords": iddata,
-							"Artist":  formattedIdentifiers[filename[0]]['createdBy'],
-							"XPAuthor":  formattedIdentifiers[filename[0]]['createdBy'],
+							"Artist":  formattedIdentifiers[str(filename[0])]['createdBy'],
+							"XPAuthor":  formattedIdentifiers[str(filename[0])]['createdBy'],
 							"Software": "FAIMS Project",
-							"ImageID":  formattedIdentifiers[filename[0]]['uuid'],
+							"ImageID":  formattedIdentifiers[str(filename[0])]['uuid'],
 							"Copyright": jsondata['name']
 
 
