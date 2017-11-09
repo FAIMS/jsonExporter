@@ -301,8 +301,8 @@ for line in f.readlines():
 
 
 if images:
-	for directory in importCon.execute("select distinct aenttypename, attributename from latestnondeletedaentvalue join attributekey using (attributeid) join latestnondeletedarchent using (uuid) join aenttype using (aenttypeid) where attributeisfile is not null and measure is not null"):
-		makeSurePathExists("%s/%s/%s" % (exportDir,clean(directory[0]), clean(directory[1])))
+#	for directory in importCon.execute("select distinct aenttypename, attributename from latestnondeletedaentvalue join attributekey using (attributeid) join latestnondeletedarchent using (uuid) join aenttype using (aenttypeid) where attributeisfile is not null and measure is not null"):
+#		makeSurePathExists("%s/%s/%s" % (exportDir,clean(directory[0]), clean(directory[1])))
 
 	filehash = defaultdict(int)
 
@@ -332,7 +332,8 @@ if images:
 				if filename[2]:
 					delimiter = "a"
 
-				newFilename =  "%s/%s/%s_%s_%s%s%s" % (aenttypename, identifier, attributename, identifier, filehash["%s%s" % (filename[0], attributename)],delimiter, r.group(0))
+				newPath = "%s/%s" % (aenttypename, identifier)
+				newFilename =  "%s/%s-%s_%s%s%s" % (newPath, attributename, identifier, filehash["%s%s" % (filename[0], attributename)],delimiter, r.group(0))
 				
 
 				#pp.pprint(formattedIdentifiers[filename[0]])
@@ -342,6 +343,8 @@ if images:
 				# 	iddata.append(id[0])
 
 				print("```From {0} to {1}```".format(originalDir+filename[1], exportDir+newFilename))
+				if not os.path.exists(exportDir+newPath):
+					os.mkdirs(exportDir+newPath)
 				shutil.copyfile(originalDir+filename[1], exportDir+newFilename)
 
 				# mergedata = exifdata.copy()
