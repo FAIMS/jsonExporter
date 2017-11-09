@@ -337,7 +337,7 @@ if images:
 
 				#pp.pprint(formattedIdentifiers[filename[0]])
 				#exifdata = exifCon.execute("select * from %s where uuid = %s" % (aenttypename, filename[0])).fetchone()
-				#iddata = [] 
+				iddata = [] 
 				for id in importCon.execute("select coalesce(measure, vocabname, freetext) from latestnondeletedarchentidentifiers where uuid = %s union select aenttypename from latestnondeletedarchent join aenttype using (aenttypeid) where uuid = %s" % (filename[0], filename[0])):
 					iddata.append(id[0])
 
