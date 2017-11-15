@@ -1,1 +1,1 @@
-# json exporter
+# Custom XML exporter
