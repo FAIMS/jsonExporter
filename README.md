@@ -1,8 +1,8 @@
-# Custom XML exporter (Alveo; OpenContext)
+# Custom XML exporter
 
 
-# About this exporter:
-This exports exports module data as XML files. 
+## About this exporter:
+This exports exports module data as XML files, required by specific projects such as for [Alveo Virtual Lab](https://alveo.edu.au/) or [OpenContext](https://opencontext.org/).
 
 ## Authorship:
 This exporter was developed by Brian Ballsun-Stanton at the FAIMS Project, Department of Ancient History, Macquarie University.
